@@ -12,10 +12,9 @@ returnAnyNumber (5, 10);
 
 // https://habr.com/ru/company/ruvds/blog/534108/
 
-const MAX_LENGTH = 140;
 
-function checkStringLength (string) {
-  if (string <= MAX_LENGTH) {
+function checkStringLength (string, maxLength) {
+  if (string <= maxLength) {
     return true;
   }
 
@@ -24,4 +23,4 @@ function checkStringLength (string) {
   }
 }
 
-checkStringLength (128);
+checkStringLength (128, 140);
