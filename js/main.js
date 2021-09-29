@@ -3,9 +3,7 @@ function returnAnyNumber (from, to) {
     return Math.floor(Math.random() * (to - from + 1)) + from;
   }
 
-  else {
-    return 'диапазон указан неверно';
-  }
+  return 'диапазон указан неверно';
 }
 
 returnAnyNumber (5, 10);
@@ -14,13 +12,12 @@ returnAnyNumber (5, 10);
 
 
 function checkStringLength (string, maxLength) {
-  if (string <= maxLength) {
+
+  if (string.length <= maxLength) {
     return true;
   }
 
-  else {
-    return false;
-  }
+  return false;
 }
 
-checkStringLength (128, 140);
+checkStringLength ('Напишите комментарий', 140);
