@@ -57,8 +57,8 @@ const arrayCommentsId = [];
 
 const createFoto = () => {
   //id
-  const randomId = function(lower, upper) {
-    let id = Math.floor(Math.random() * (upper - lower + 1)) + lower;
+  const getRandomId = function(lower, upper) {
+    const id = Math.floor(Math.random() * (upper - lower + 1)) + lower;
     while (arrayId.includes(id)) {
       continue;
     }
@@ -67,8 +67,8 @@ const createFoto = () => {
   };
 
   //url
-  const randomUrl = function(lower, upper) {
-    let url = Math.floor(Math.random() * (upper - lower + 1)) + lower;
+  const getRandomUrl = function(lower, upper) {
+    const url = Math.floor(Math.random() * (upper - lower + 1)) + lower;
     while (arrayUrl.includes(url)) {
       continue;
     }
@@ -77,13 +77,13 @@ const createFoto = () => {
   };
 
   //описание
-  const description = function() {
-    let randomDescription = Math.floor(Math.random() * DESCRIPTIONS.length);
+  const getRandomDescription = function() {
+    const randomDescription = Math.floor(Math.random() * DESCRIPTIONS.length);
     return DESCRIPTIONS[randomDescription];
   };
 
   //лайки
-  const likes = function(min, max) {
+  const getSomeLikes = function(min, max) {
     const result = Math.floor(Math.random() * (max - min + 1)) + min;
     return result;
   };
@@ -91,45 +91,45 @@ const createFoto = () => {
   //комментарии
   const createComments = () => {
     //комментарии-id
-    const randomCommentsId = function() {
+    const getRandomCommentsId = function() {
       for (let i = 0; i < arrayCommentsId.length + 1; i++) {
-        let commentsId = arrayCommentsId.length + 1;
+        const commentsId = arrayCommentsId.length + 1;
         arrayCommentsId.push(commentsId);
         return arrayCommentsId.length;
       }
     };
 
     //аватарки
-    const avatar = function(min, max) {
+    const chooseAnyAvatar = function(min, max) {
       const result = Math.floor(Math.random() * (max - min + 1)) + min;
       return `img/avatar-${  result  }.svg`;
     };
 
     //текст комментария
-    const textComments = function() {
-      let randomMessage = Math.floor(Math.random() * MESSAGES.length);
+    const chooseTextComments = function() {
+      const randomMessage = Math.floor(Math.random() * MESSAGES.length);
       return MESSAGES[randomMessage];
     };
 
     //имя комментатора
-    const nameOfCommentator = function() {
-      let randomName = Math.floor(Math.random() * NAMES.length);
+    const chooseNameOfCommentator = function() {
+      const randomName = Math.floor(Math.random() * NAMES.length);
       return NAMES[randomName];
     };
 
     return {
-      id: randomCommentsId(),
-      avatar: `${avatar(1, 6)  }`,
-      message: `${textComments(MESSAGES)  }`,
-      name: `${nameOfCommentator(NAMES)  }`,
+      id: getRandomCommentsId(),
+      avatar: `${chooseAnyAvatar(1, 6)  }`,
+      message: `${chooseTextComments(MESSAGES)  }`,
+      name: `${chooseNameOfCommentator(NAMES)  }`,
     };
   };
 
   return {
-    id: randomId(1, 25),
-    url: `${randomUrl(1, 25)  }`,
-    description: `${description(DESCRIPTIONS)  }`,
-    likes: likes(15, 200),
+    id: getRandomId(1, 25),
+    url: `${getRandomUrl(1, 25)  }`,
+    description: `${getRandomDescription(DESCRIPTIONS)  }`,
+    likes: getSomeLikes(15, 200),
     comments: createComments(),
   };
 };
