@@ -26,10 +26,47 @@ const NAMES = [
   'Dolores',
 ];
 
+const arrayCommentsId = [];
+
 //описание/текст комментария/имя комментатора
 const generateParameter = function(array) {
   const randomParameter = Math.floor(Math.random() * array.length);
   return array[randomParameter];
 };
 
+//id/url
+const getRandomUniqueNumber = function(lower, upper, array) {
+  const randomNumber = Math.floor(Math.random() * (upper - lower + 1)) + lower;
+  while (array.includes(randomNumber)) {
+    continue;
+  }
+  array.push(randomNumber);
+  return randomNumber;
+};
+
+//лайки
+const getSomeLikes = function(min, max) {
+  const result = Math.floor(Math.random() * (max - min + 1)) + min;
+  return result;
+};
+
+//комментарии-id
+const getRandomCommentsId = function() {
+  for (let i = 0; i < arrayCommentsId.length + 1; i++) {
+    const commentsId = arrayCommentsId.length + 1;
+    arrayCommentsId.push(commentsId);
+    return arrayCommentsId.length;
+  }
+};
+
+//аватарки
+const chooseAnyAvatar = function(min, max) {
+  const result = Math.floor(Math.random() * (max - min + 1)) + min;
+  return `img/avatar-${  result  }.svg`;
+};
+
 export {DESCRIPTIONS, MESSAGES, NAMES, generateParameter};
+export {getRandomUniqueNumber};
+export {getSomeLikes};
+export {arrayCommentsId, getRandomCommentsId};
+export {chooseAnyAvatar};
