@@ -1,7 +1,4 @@
-import {createFoto} from './mock/create-foto';
+import {createFotos} from './mock/create-fotos.js';
 
-const arrayOfCreateFoto = (count) =>
-  [...Array(count)].map(createFoto);
-
-arrayOfCreateFoto(3);
+createFotos(3);
 

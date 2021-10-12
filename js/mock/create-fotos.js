@@ -1,7 +1,5 @@
-import {getRandomUniqueNumber} from './utils';
-import {DESCRIPTIONS, generateParameter} from './utils';
-import {getSomeLikes} from './utils';
-import {createComments} from './create-comments';
+import {getRandomUniqueNumber, DESCRIPTIONS, generateParameter, getSomeLikes} from './utils.js';
+import {createComments} from './create-comments.js';
 
 const arrayId = [];
 const arrayUrl = [];
@@ -14,4 +12,7 @@ const createFoto = () => ({
   comments: createComments(),
 });
 
-export {arrayId, arrayUrl, createFoto};
+const createFotos = (count) =>
+  [...Array(count)].map(createFoto);
+
+export {createFotos};

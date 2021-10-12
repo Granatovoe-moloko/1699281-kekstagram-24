@@ -29,13 +29,13 @@ const NAMES = [
 const arrayCommentsId = [];
 
 //описание/текст комментария/имя комментатора
-const generateParameter = function(array) {
+const generateParameter = (array) => {
   const randomParameter = Math.floor(Math.random() * array.length);
   return array[randomParameter];
 };
 
 //id/url
-const getRandomUniqueNumber = function(lower, upper, array) {
+const getRandomUniqueNumber = (lower, upper, array) => {
   const randomNumber = Math.floor(Math.random() * (upper - lower + 1)) + lower;
   while (array.includes(randomNumber)) {
     continue;
@@ -45,13 +45,13 @@ const getRandomUniqueNumber = function(lower, upper, array) {
 };
 
 //лайки
-const getSomeLikes = function(min, max) {
+const getSomeLikes = (min, max) => {
   const result = Math.floor(Math.random() * (max - min + 1)) + min;
   return result;
 };
 
 //комментарии-id
-const getRandomCommentsId = function() {
+const getRandomCommentsId = () => {
   for (let i = 0; i < arrayCommentsId.length + 1; i++) {
     const commentsId = arrayCommentsId.length + 1;
     arrayCommentsId.push(commentsId);
@@ -60,13 +60,9 @@ const getRandomCommentsId = function() {
 };
 
 //аватарки
-const chooseAnyAvatar = function(min, max) {
+const chooseAnyAvatar = (min, max) => {
   const result = Math.floor(Math.random() * (max - min + 1)) + min;
   return `img/avatar-${  result  }.svg`;
 };
 
-export {DESCRIPTIONS, MESSAGES, NAMES, generateParameter};
-export {getRandomUniqueNumber};
-export {getSomeLikes};
-export {arrayCommentsId, getRandomCommentsId};
-export {chooseAnyAvatar};
+export {DESCRIPTIONS, MESSAGES, NAMES, generateParameter, getRandomUniqueNumber, getSomeLikes, getRandomCommentsId, chooseAnyAvatar};

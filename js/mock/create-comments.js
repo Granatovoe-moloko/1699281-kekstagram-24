@@ -1,8 +1,6 @@
 //комментарии
 
-import {MESSAGES, NAMES, generateParameter} from './utils';
-import {getRandomCommentsId} from './utils';
-import {chooseAnyAvatar} from './utils';
+import {MESSAGES, NAMES, generateParameter, getRandomCommentsId, chooseAnyAvatar} from './utils.js';
 
 const createComments = () => ({
   id: getRandomCommentsId(),
