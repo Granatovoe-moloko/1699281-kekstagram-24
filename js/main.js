@@ -1,4 +1,3 @@
-import {createFotos} from './mock/create-fotos.js';
+import {createPictures} from './apps.js';
 
-createFotos(3);
-
+createPictures(3);
