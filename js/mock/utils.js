@@ -35,12 +35,8 @@ const generateParameter = (array) => {
 };
 
 //id/url
-const getRandomUniqueNumber = (lower, upper, array) => {
+const getRandomUniqueNumber = (lower, upper) => {
   const randomNumber = Math.floor(Math.random() * (upper - lower + 1)) + lower;
-  while (array.includes(randomNumber)) {
-    continue;
-  }
-  array.push(randomNumber);
   return randomNumber;
 };
 
