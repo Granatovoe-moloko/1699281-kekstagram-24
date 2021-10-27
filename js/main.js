@@ -1,4 +1,8 @@
-import {createFotos} from './mock/create-fotos.js';
+import {createPhotoData} from './mock/create-photo-data.js';
+import {showPreviews} from './previews.js';
 
-createFotos(3);
 
+const photoData = createPhotoData(11);
+
+
+showPreviews(photoData);
