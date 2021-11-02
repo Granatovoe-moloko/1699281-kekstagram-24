@@ -15,4 +15,4 @@ const createPhoto = () => ({
 const createPhotoData = (count) =>
   [...Array(count)].map(createPhoto);
 
-export {createPhotoData};
+export {createPhotoData, commentsCount};
