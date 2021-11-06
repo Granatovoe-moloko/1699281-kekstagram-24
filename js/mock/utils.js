@@ -61,4 +61,6 @@ const chooseAnyAvatar = (min, max) => {
   return `img/avatar-${  result  }.svg`;
 };
 
-export {DESCRIPTIONS, MESSAGES, NAMES, generateParameter, getRandomUniqueNumber, getSomeLikes, getRandomCommentsId, chooseAnyAvatar};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {DESCRIPTIONS, MESSAGES, NAMES, generateParameter, getRandomUniqueNumber, getSomeLikes, getRandomCommentsId, chooseAnyAvatar, isEscapeKey};

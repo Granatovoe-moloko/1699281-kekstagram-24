@@ -1,4 +1,5 @@
 import {showFullPhoto} from './full-photo.js';
+import {isEscapeKey} from './mock/utils.js';
 
 const previewList = document.querySelector('.pictures');
 const previewPattern = document.querySelector('#picture').content.querySelector('.picture');
@@ -20,7 +21,7 @@ const showPreviews = (picturesData) => {
     fragment.appendChild(preview);
 
     const closePhotoKeydown = (evt) => {
-      if (evt.key === 'Escape') {
+      if (isEscapeKey(evt)) {
         fullPhoto.classList.add('hidden');
         commentCounter.classList.remove('hidden');
         commentLoader.classList.remove('hidden');

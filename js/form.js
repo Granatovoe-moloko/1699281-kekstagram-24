@@ -1,3 +1,5 @@
+import {isEscapeKey} from './mock/utils.js';
+
 const uploadFile = document.querySelector('#upload-file');
 const uploadForm = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
@@ -12,7 +14,7 @@ const MAX_COMMENT_LENGTH = 140;
 
 
 const cancelFormKeydown = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey(evt)) {
     uploadForm.classList.add('hidden');
     body.classList.remove('modal-open');
     uploadFile.value = ''; //почему это не нужно для закрытия по клику?куда записывается значение value,если для input form нет value
