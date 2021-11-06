@@ -19,32 +19,36 @@ const showPreviews = (picturesData) => {
     preview.querySelector('.picture__comments').textContent = comments.length;
     fragment.appendChild(preview);
 
-    function openPhoto (evt) {
+    const closePhotoKeydown = (evt) => {
+      if (evt.key === 'Escape') {
+        fullPhoto.classList.add('hidden');
+        commentCounter.classList.remove('hidden');
+        commentLoader.classList.remove('hidden');
+        body.classList.remove('modal-open');
+        document.removeEventListener('keydown', closePhotoKeydown);
+      }
+    };
+
+    const openPhoto = (evt) => {
       evt.preventDefault();
       showFullPhoto(pictureData);
       commentCounter.classList.add('hidden');
       commentLoader.classList.add('hidden');
       body.classList.add('modal-open');
-    }
 
-    preview.addEventListener('click', openPhoto);
-    //fullPhotoClose.removeEventListener('click', openPhoto);
+      document.addEventListener('keydown', closePhotoKeydown);
+    };
+
+    preview.addEventListener('click', (evt) => {
+      openPhoto(evt);
+    });
+
     fullPhotoClose.addEventListener('click', () => {
       fullPhoto.classList.add('hidden');
       commentCounter.classList.remove('hidden');
       commentLoader.classList.remove('hidden');
       body.classList.remove('modal-open');
     });
-
-    document.addEventListener('keydown', (evt) => {
-      if (evt.keyCode === 27) {
-        fullPhoto.classList.add('hidden');
-        commentCounter.classList.remove('hidden');
-        commentLoader.classList.remove('hidden');
-        body.classList.remove('modal-open');
-      }
-    });
-
   });
   previewList.appendChild(fragment);
 };
