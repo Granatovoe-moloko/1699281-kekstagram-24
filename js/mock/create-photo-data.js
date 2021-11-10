@@ -9,7 +9,7 @@ const createPhoto = () => ({
   url: `photos/${getRandomUniqueNumber(1, 25)  }.jpg`,
   description: `${generateParameter(DESCRIPTIONS)  }`,
   likes: getSomeLikes(15, 200),
-  comments: commentsData(2),
+  comments: commentsData(13),
 });
 
 const createPhotoData = (count) =>
