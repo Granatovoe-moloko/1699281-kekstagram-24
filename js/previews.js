@@ -18,25 +18,23 @@ const showPreviews = (picturesData) => {
     preview.querySelector('.picture__comments').textContent = comments.length;
     fragment.appendChild(preview);
 
-    const closePhotoKeydown = (evt) => {
+    const closePhotoKeydownHandler = (evt) => {
       if (isEscapeKey(evt)) {
         fullPhoto.classList.add('hidden');
         body.classList.remove('modal-open');
-        document.removeEventListener('keydown', closePhotoKeydown);
+        document.removeEventListener('keydown', closePhotoKeydownHandler);
       }
     };
 
-    const openPhoto = (evt) => {
+    const openPhotoHandler = (evt) => {
       evt.preventDefault();
       showFullPhoto(pictureData);
       body.classList.add('modal-open');
 
-      document.addEventListener('keydown', closePhotoKeydown);
+      document.addEventListener('keydown', closePhotoKeydownHandler);
     };
 
-    preview.addEventListener('click', (evt) => {
-      openPhoto(evt);
-    });
+    preview.addEventListener('click', openPhotoHandler);
 
     fullPhotoClose.addEventListener('click', () => {
       fullPhoto.classList.add('hidden');
