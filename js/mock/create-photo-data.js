@@ -1,8 +1,8 @@
 import {getRandomUniqueNumber, DESCRIPTIONS, generateParameter, getSomeLikes} from './utils.js';
-import {createComments} from './create-comments.js';
+import {createComment} from './create-comment.js';
 
 const commentsData = (count) =>
-  [...Array(count)].map(createComments);
+  [...Array(count)].map(createComment);
 
 const createPhoto = () => ({
   id: getRandomUniqueNumber(1, 25),

@@ -14,8 +14,10 @@ const showFullPhotoComments = (photoComments) => {
 
   const showPartOfComments = (array) => array.splice(0, 5);
   const commentFragment = document.createDocumentFragment();
+  fullPhotoComments.innerHTML = '';
 
   const cutVisionComments = (generatedComments) => {
+    commentsLoaderButton.classList.remove('hidden');
     const visionComments = showPartOfComments(generatedComments);
 
     visionComments.forEach((comment) => {
@@ -28,13 +30,12 @@ const showFullPhotoComments = (photoComments) => {
 
       commentFragment.appendChild(commentpattern);
     });
-    if (visionComments.length < 5) {
+    if (photoComments.length < 1) {
       commentsLoaderButton.classList.add('hidden');
     }
-    fullPhotoComments.innerHTML = '';
     fullPhotoComments.appendChild(commentFragment);
 
-    fullPhotoCommentsCount.textContent = `${visionComments.length  } из `;
+    fullPhotoCommentsCount.textContent = `${fullPhotoComments.childNodes.length  } из `;
     fullPhotoCommentsCount.appendChild(allPhotoComments);
   };
 
