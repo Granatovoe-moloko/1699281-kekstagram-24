@@ -6,6 +6,7 @@ const previewPattern = document.querySelector('#picture').content.querySelector(
 const body = document.querySelector('body');
 const fullPhoto = document.querySelector('.big-picture');
 const fullPhotoClose = document.querySelector('.big-picture__cancel');
+const newCommentsField = document.querySelector('.social__footer-text');
 
 
 const showPreviews = (picturesData) => {
@@ -19,7 +20,7 @@ const showPreviews = (picturesData) => {
     fragment.appendChild(preview);
 
     const closePhotoKeydownHandler = (evt) => {
-      if (isEscapeKey(evt)) {
+      if (isEscapeKey(evt) && document.activeElement !== newCommentsField) {
         fullPhoto.classList.add('hidden');
         body.classList.remove('modal-open');
         document.removeEventListener('keydown', closePhotoKeydownHandler);

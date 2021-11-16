@@ -1,9 +1,12 @@
-import {createPhotoData} from './mock/create-photo-data.js';
 import {showPreviews} from './previews.js';
-import {downloadNewFile} from './form.js';
+import {getPhotoData} from './api.js';
+import {downloadNewFile, addHandlerToSendForm, closeSuccessMessage, closeErrorMessage} from './form.js';
 
-const photoData = createPhotoData(11);
 
-showPreviews(photoData);
+getPhotoData(showPreviews);
 
 downloadNewFile();
+
+addHandlerToSendForm(closeSuccessMessage, closeErrorMessage);
+
+

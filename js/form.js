@@ -1,4 +1,6 @@
 import {isEscapeKey} from './utils.js';
+import {sendData} from './api.js';
+
 
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_LENGTH = 20;
@@ -24,17 +26,102 @@ const effectsOfFile = document.querySelectorAll('.effects__radio');
 const slider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const effectLevelFieldset = document.querySelector('.img-upload__effect-level');
+const successMessagePattern = document.querySelector('#success').content.querySelector('.success');
+const errorMessagePattern = document.querySelector('#error').content.querySelector('.error');
 
+
+const closeSuccessMessage =() => {
+  uploadForm.classList.add('hidden');
+  body.classList.remove('modal-open');
+  newFileForm.reset();
+  newFilePreview.className = '';
+  effectLevelFieldset.classList.add('hidden');
+  newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.cssText = null;
+
+  const messageSuccess = successMessagePattern.cloneNode(true);
+  document.body.appendChild(messageSuccess);
+
+  const buttonSuccess = document.querySelector('.success__button');
+
+  const closeMessageEscape = (evt) => {
+    if (isEscapeKey(evt)) {
+      messageSuccess.remove();
+    }
+  };
+
+  document.addEventListener('keydown', closeMessageEscape);
+
+  buttonSuccess.addEventListener('click', () => {
+    messageSuccess.remove();
+  });
+  document.addEventListener('click', () => {
+    if (document.activeElement !== messageSuccess) {
+      messageSuccess.remove();
+    }
+  });
+};
+
+
+const closeErrorMessage =() => {
+  uploadForm.classList.add('hidden');
+  body.classList.remove('modal-open');
+  newFileForm.reset();
+  newFilePreview.className = '';
+  effectLevelFieldset.classList.add('hidden');
+  newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.cssText = null;
+
+  const messageError = errorMessagePattern.cloneNode(true);
+  document.body.appendChild(messageError);
+
+  const buttonError = document.querySelector('.error__button');
+
+  const closeMessageEscape = (evt) => {
+    if (isEscapeKey(evt)) {
+      messageError.remove();
+    }
+  };
+
+  document.addEventListener('keydown', closeMessageEscape);
+
+  buttonError.addEventListener('click', () => {
+    messageError.remove();
+  });
+  document.addEventListener('click', () => {
+    if (document.activeElement !== messageError) {
+      messageError.remove();
+    }
+  });
+};
+
+
+const addHandlerToSendForm = (onSuccess, onFail) => {
+  newFileForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    sendData(
+      () => onSuccess(),
+      () => onFail(),
+      new FormData(evt.target),
+    );
+  });
+};
+
+const closeForm =() => {
+  uploadForm.classList.add('hidden');
+  body.classList.remove('modal-open');
+  newFileForm.reset();
+  newFilePreview.className = '';
+  effectLevelFieldset.classList.add('hidden');
+  newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.cssText = null;
+};
 
 const downloadNewFile = () => {
 
   const cancelFormKeydownHandler = (evt) => {
     if (isEscapeKey(evt) && document.activeElement !== fieldHashtags && document.activeElement !== fieldComment) {
-      uploadForm.classList.add('hidden');
-      body.classList.remove('modal-open');
-      newFileForm.reset();
-      newFilePreview.className = '';
-      effectLevelFieldset.classList.add('hidden');
+      closeForm();
       document.removeEventListener('keydown', cancelFormKeydownHandler);
     }
   };
@@ -49,10 +136,7 @@ const downloadNewFile = () => {
   uploadFile.addEventListener('change', openUploadFormHandler);
 
   cancelForm.addEventListener('click', () => {
-    uploadForm.classList.add('hidden');
-    body.classList.remove('modal-open');
-    newFilePreview.className = '';
-    effectLevelFieldset.classList.add('hidden');
+    closeForm();
     document.removeEventListener('keydown', cancelFormKeydownHandler);
   });
 
@@ -61,8 +145,7 @@ const downloadNewFile = () => {
   const changeScale = (step) => {
     const result = parseInt(scaleValueField.value, 10) + step;
     scaleValueField.value = `${result  }%`;
-    const xxx = result / 100;
-    newFilePreview.style.transform = 'scale(xxx)';
+    newFilePreview.style.transform = `scale(${result / 100})`;
   };
 
   buttonScaleSmaller.addEventListener('click', () => {
@@ -105,7 +188,21 @@ const downloadNewFile = () => {
 
   slider.noUiSlider.on('update', (_, handle, unencoded) => {
     effectLevelValue.value = unencoded[handle];
-    newFilePreview.style.filter = 'grayscale(effectLevelValue.value)';
+    if(newFilePreview.classList.contains('effects__preview--chrome')) {
+      newFilePreview.style.filter = `grayscale(${effectLevelValue.value})`;
+    }
+    else if(newFilePreview.classList.contains('effects__preview--sepia')) {
+      newFilePreview.style.filter = `sepia(${effectLevelValue.value})`;
+    }
+    else if(newFilePreview.classList.contains('effects__preview--marvin')) {
+      newFilePreview.style.filter = `invert(${`${effectLevelValue.value  }%`})`;
+    }
+    else if(newFilePreview.classList.contains('effects__preview--phobos')) {
+      newFilePreview.style.filter = `blur(${`${effectLevelValue.value  }px`})`;
+    }
+    else if(newFilePreview.classList.contains('effects__preview--heat')) {
+      newFilePreview.style.filter = `brightness(${effectLevelValue.value})`;
+    }
   });
 
   effectsOfFile.forEach((item) => {
@@ -173,6 +270,7 @@ const downloadNewFile = () => {
       else if(newFilePreview.classList.contains('effects__preview--none')) {
         effectLevelFieldset.classList.add('hidden');
         effectLevelValue.value = '';
+        newFilePreview.style.cssText = null;
       }
 
     });
@@ -180,14 +278,25 @@ const downloadNewFile = () => {
 
 
   //хэштеги
+  const illuminateInvalidFields = (field) => {
+    field.style.borderColor = 'red';
+    field.style.borderWidth = '3px';
+  };
+
   const checkHashtags = (array) => {
     if (array.length > MAX_HASHTAG_COUNT) {
       fieldHashtags.setCustomValidity(`Не должно быть больше ${  MAX_HASHTAG_COUNT  } хэштегов`);
+      illuminateInvalidFields(fieldHashtags);
     }
     else if (array.length !== new Set(array).size) {
       fieldHashtags.setCustomValidity('удалите повторяющиеся хэштеги');
+      illuminateInvalidFields(fieldHashtags);
     }
-    else {fieldHashtags.setCustomValidity('');}
+    else {
+      fieldHashtags.setCustomValidity('');
+      fieldHashtags.style.borderColor = 'rgb(118, 118, 118)';
+      fieldHashtags.style.borderWidth = '2px';
+    }
     fieldHashtags.reportValidity();
   };
 
@@ -200,18 +309,24 @@ const downloadNewFile = () => {
     hashtags.forEach((hashtag) => {
       if (!regStartHashtag.test(hashtag)) {
         fieldHashtags.setCustomValidity('хэштег должен начинаться с символа #');
+        illuminateInvalidFields(fieldHashtags);
       }
       else if (hashtag.length < MIN_HASHTAG_LENGTH) {
         fieldHashtags.setCustomValidity(`минимальная длина хэштега - ${  MIN_HASHTAG_LENGTH  } симв. с решеткой`);
+        illuminateInvalidFields(fieldHashtags);
       }
       else if (!regSymbolsHashtag.test(hashtag)) {
         fieldHashtags.setCustomValidity('хэштег может содержать только латинские и киррилические буквы и цифры');
+        illuminateInvalidFields(fieldHashtags);
       }
       else if (hashtag.length > MAX_HASHTAG_LENGTH) {
         fieldHashtags.setCustomValidity(`максимальная длина хэштега - ${  MAX_HASHTAG_LENGTH  } симв. с решеткой`);
+        illuminateInvalidFields(fieldHashtags);
       }
 
       else {
+        fieldHashtags.style.borderColor = 'rgb(118, 118, 118)';
+        fieldHashtags.style.borderWidth = '2px';
         checkHashtags(hashtags);
       }
 
@@ -226,8 +341,11 @@ const downloadNewFile = () => {
 
     if (commentLength > MAX_COMMENT_LENGTH) {
       fieldComment.setCustomValidity(`максимальная длина комментария - ${  MAX_COMMENT_LENGTH  } символов. Удалите ${  commentLength - MAX_COMMENT_LENGTH  }симв.`);
+      illuminateInvalidFields(fieldComment);
     }
     else {
+      fieldHashtags.style.borderColor = 'rgb(118, 118, 118)';
+      fieldHashtags.style.borderWidth = '1px';
       fieldComment.setCustomValidity('');
     }
 
@@ -236,4 +354,4 @@ const downloadNewFile = () => {
 
 };
 
-export {downloadNewFile};
+export {downloadNewFile, addHandlerToSendForm, closeForm, closeSuccessMessage, closeErrorMessage};
