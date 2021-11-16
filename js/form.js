@@ -1,4 +1,4 @@
-import {isEscapeKey, showMessage} from './utils.js';
+import {isEscapeKey} from './utils.js';
 import {sendData} from './api.js';
 
 
@@ -26,18 +26,86 @@ const effectsOfFile = document.querySelectorAll('.effects__radio');
 const slider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const effectLevelFieldset = document.querySelector('.img-upload__effect-level');
+const successMessagePattern = document.querySelector('#success').content.querySelector('.success');
+const errorMessagePattern = document.querySelector('#error').content.querySelector('.error');
 
-const sendForm = (onSuccess) => {
+
+const closeSuccessMessage =() => {
+  uploadForm.classList.add('hidden');
+  body.classList.remove('modal-open');
+  newFileForm.reset();
+  newFilePreview.className = '';
+  effectLevelFieldset.classList.add('hidden');
+  newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.cssText = null;
+
+  const messageSuccess = successMessagePattern.cloneNode(true);
+  document.body.appendChild(messageSuccess);
+
+  const buttonSuccess = document.querySelector('.success__button');
+
+  const closeMessageEscape = (evt) => {
+    if (isEscapeKey(evt)) {
+      messageSuccess.remove();
+    }
+  };
+
+  document.addEventListener('keydown', closeMessageEscape);
+
+  buttonSuccess.addEventListener('click', () => {
+    messageSuccess.remove();
+  });
+  document.addEventListener('click', () => {
+    if (document.activeElement !== messageSuccess) {
+      messageSuccess.remove();
+    }
+  });
+};
+
+
+const closeErrorMessage =() => {
+  uploadForm.classList.add('hidden');
+  body.classList.remove('modal-open');
+  newFileForm.reset();
+  newFilePreview.className = '';
+  effectLevelFieldset.classList.add('hidden');
+  newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.cssText = null;
+
+  const messageError = errorMessagePattern.cloneNode(true);
+  document.body.appendChild(messageError);
+
+  const buttonError = document.querySelector('.error__button');
+
+  const closeMessageEscape = (evt) => {
+    if (isEscapeKey(evt)) {
+      messageError.remove();
+    }
+  };
+
+  document.addEventListener('keydown', closeMessageEscape);
+
+  buttonError.addEventListener('click', () => {
+    messageError.remove();
+  });
+  document.addEventListener('click', () => {
+    if (document.activeElement !== messageError) {
+      messageError.remove();
+    }
+  });
+};
+
+
+const addHandlerToSendForm = (onSuccess, onFail) => {
   newFileForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     sendData(
       () => onSuccess(),
-      () => showMessage('Не удалось отправить форму. Попробуйте ещё раз'),
+      () => onFail(),
       new FormData(evt.target),
     );
   });
 };
-
 
 const closeForm =() => {
   uploadForm.classList.add('hidden');
@@ -46,6 +114,7 @@ const closeForm =() => {
   newFilePreview.className = '';
   effectLevelFieldset.classList.add('hidden');
   newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.cssText = null;
 };
 
 const downloadNewFile = () => {
@@ -285,4 +354,4 @@ const downloadNewFile = () => {
 
 };
 
-export {downloadNewFile, sendForm, closeForm};
+export {downloadNewFile, addHandlerToSendForm, closeForm, closeSuccessMessage, closeErrorMessage};
