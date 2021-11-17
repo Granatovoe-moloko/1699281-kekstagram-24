@@ -1,6 +1,5 @@
 import {showFullPhoto} from './full-photo.js';
-import {isEscapeKey} from './utils.js';
-import {debounce} from './utils/debounce.js';
+import {isEscapeKey, debounce} from './utils.js';
 
 const VIEW_RANDOM_PICTURES_COUNT = 10;
 
@@ -16,7 +15,7 @@ const randomFilterButton = document.querySelector('#filter-random');
 const discussedFilterButton = document.querySelector('#filter-discussed');
 
 
-const showPreviews = (picturesData) => {
+const renderPreviews = (picturesData) => {
   const fragment = document.createDocumentFragment();
   picturesData.forEach((pictureData) => {
     const {url, likes, comments} = pictureData;
@@ -51,24 +50,29 @@ const showPreviews = (picturesData) => {
   });
   previewList.appendChild(fragment);
   filters.classList.remove('img-filters--inactive');
+};
 
-  //копия изначального массива
 
-  const picturesDataCopy = picturesData.slice();
+//фильтры
+
+
+const filterPreviews = (picturesData) => {
+
+  const clearPreviews = () => {
+    const earlyPictures = document.querySelectorAll('.picture');
+    earlyPictures.forEach((picture) => {
+      picture.remove();
+    });
+  };
 
   //фильтрация по умолчанию
 
   const filterDefault = (first, second) => first.id - second.id;
 
-  defaultFilterButton.addEventListener('click', () => {
-
-    const earlyPictures = document.querySelectorAll('.picture');
-    earlyPictures.forEach((picture) => {
-      picture.remove();
-    });
+  defaultFilterButton.addEventListener('click', debounce(() => {
+    clearPreviews();
 
     defaultFilterButton.classList.add('img-filters__button--active');
-
     if (randomFilterButton.classList.contains('img-filters__button--active')) {
       randomFilterButton.classList.remove('img-filters__button--active');
     }
@@ -76,25 +80,19 @@ const showPreviews = (picturesData) => {
       discussedFilterButton.classList.remove('img-filters__button--active');
     }
 
-    const defaultPictures = picturesDataCopy.sort(filterDefault);
-    console.log(defaultPictures);
-    showPreviews(defaultPictures);
+    const defaultPictures = picturesData.sort(filterDefault);
+    renderPreviews(defaultPictures);
 
-  });
+  }));
 
   //случайная фильтрация
 
   const filterRandom = () =>  Math.random() - 0.5;
 
-  randomFilterButton.addEventListener('click', () => {
-
-    const earlyPictures = document.querySelectorAll('.picture');
-    earlyPictures.forEach((picture) => {
-      picture.remove();
-    });
+  randomFilterButton.addEventListener('click', debounce(() => {
+    clearPreviews();
 
     randomFilterButton.classList.add('img-filters__button--active');
-
     if (defaultFilterButton.classList.contains('img-filters__button--active')) {
       defaultFilterButton.classList.remove('img-filters__button--active');
     }
@@ -103,23 +101,18 @@ const showPreviews = (picturesData) => {
     }
 
     const randomPictures = picturesData.sort(filterRandom);
-    const viewRandomPictures = randomPictures.splice(0, VIEW_RANDOM_PICTURES_COUNT);
-    showPreviews(viewRandomPictures);
-  });
+    const viewRandomPictures = randomPictures.slice(0, VIEW_RANDOM_PICTURES_COUNT);
+    renderPreviews(viewRandomPictures);
+  }));
 
   //фильтрация по количеству комментариев
 
   const filterDiscussed = (first, second) => second.comments.length - first.comments.length;
 
-  discussedFilterButton.addEventListener('click', () => {
-
-    const earlyPictures = document.querySelectorAll('.picture');
-    earlyPictures.forEach((picture) => {
-      picture.remove();
-    });
+  discussedFilterButton.addEventListener('click', debounce(() => {
+    clearPreviews();
 
     discussedFilterButton.classList.add('img-filters__button--active');
-
     if (defaultFilterButton.classList.contains('img-filters__button--active')) {
       defaultFilterButton.classList.remove('img-filters__button--active');
     }
@@ -127,13 +120,13 @@ const showPreviews = (picturesData) => {
       randomFilterButton.classList.remove('img-filters__button--active');
     }
 
-    const discussedPictures = picturesDataCopy.sort(filterDiscussed);
-    console.log(discussedPictures);
-    showPreviews(discussedPictures);
+    const discussedPictures = picturesData.sort(filterDiscussed);
+    renderPreviews(discussedPictures);
 
-  });
+  }));
+
 
 };
 
-export {showPreviews};
+export {renderPreviews, filterPreviews};
 
