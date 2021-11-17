@@ -4,9 +4,8 @@ import {downloadNewFile, addHandlerToSendForm, closeSuccessMessage, closeErrorMe
 
 getPhotoData((photos) => {
   renderPreviews(photos);
+  filterPreviews(photos);
 });
-
-getPhotoData(filterPreviews);
 
 downloadNewFile();
 
