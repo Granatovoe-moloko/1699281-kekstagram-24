@@ -1,5 +1,8 @@
 import {showFullPhoto} from './full-photo.js';
 import {isEscapeKey} from './utils.js';
+import {debounce} from './utils/debounce.js';
+
+const VIEW_RANDOM_PICTURES_COUNT = 10;
 
 const previewList = document.querySelector('.pictures');
 const previewPattern = document.querySelector('#picture').content.querySelector('.picture');
@@ -7,6 +10,10 @@ const body = document.querySelector('body');
 const fullPhoto = document.querySelector('.big-picture');
 const fullPhotoClose = document.querySelector('.big-picture__cancel');
 const newCommentsField = document.querySelector('.social__footer-text');
+const filters = document.querySelector('.img-filters');
+const defaultFilterButton = document.querySelector('#filter-default');
+const randomFilterButton = document.querySelector('#filter-random');
+const discussedFilterButton = document.querySelector('#filter-discussed');
 
 
 const showPreviews = (picturesData) => {
@@ -43,6 +50,89 @@ const showPreviews = (picturesData) => {
     });
   });
   previewList.appendChild(fragment);
+  filters.classList.remove('img-filters--inactive');
+
+  //копия изначального массива
+
+  const picturesDataCopy = picturesData.slice();
+
+  //фильтрация по умолчанию
+
+  const filterDefault = (first, second) => first.id - second.id;
+
+  defaultFilterButton.addEventListener('click', () => {
+
+    const earlyPictures = document.querySelectorAll('.picture');
+    earlyPictures.forEach((picture) => {
+      picture.remove();
+    });
+
+    defaultFilterButton.classList.add('img-filters__button--active');
+
+    if (randomFilterButton.classList.contains('img-filters__button--active')) {
+      randomFilterButton.classList.remove('img-filters__button--active');
+    }
+    else {
+      discussedFilterButton.classList.remove('img-filters__button--active');
+    }
+
+    const defaultPictures = picturesDataCopy.sort(filterDefault);
+    console.log(defaultPictures);
+    showPreviews(defaultPictures);
+
+  });
+
+  //случайная фильтрация
+
+  const filterRandom = () =>  Math.random() - 0.5;
+
+  randomFilterButton.addEventListener('click', () => {
+
+    const earlyPictures = document.querySelectorAll('.picture');
+    earlyPictures.forEach((picture) => {
+      picture.remove();
+    });
+
+    randomFilterButton.classList.add('img-filters__button--active');
+
+    if (defaultFilterButton.classList.contains('img-filters__button--active')) {
+      defaultFilterButton.classList.remove('img-filters__button--active');
+    }
+    else {
+      discussedFilterButton.classList.remove('img-filters__button--active');
+    }
+
+    const randomPictures = picturesData.sort(filterRandom);
+    const viewRandomPictures = randomPictures.splice(0, VIEW_RANDOM_PICTURES_COUNT);
+    showPreviews(viewRandomPictures);
+  });
+
+  //фильтрация по количеству комментариев
+
+  const filterDiscussed = (first, second) => second.comments.length - first.comments.length;
+
+  discussedFilterButton.addEventListener('click', () => {
+
+    const earlyPictures = document.querySelectorAll('.picture');
+    earlyPictures.forEach((picture) => {
+      picture.remove();
+    });
+
+    discussedFilterButton.classList.add('img-filters__button--active');
+
+    if (defaultFilterButton.classList.contains('img-filters__button--active')) {
+      defaultFilterButton.classList.remove('img-filters__button--active');
+    }
+    else {
+      randomFilterButton.classList.remove('img-filters__button--active');
+    }
+
+    const discussedPictures = picturesDataCopy.sort(filterDiscussed);
+    console.log(discussedPictures);
+    showPreviews(discussedPictures);
+
+  });
+
 };
 
 export {showPreviews};
