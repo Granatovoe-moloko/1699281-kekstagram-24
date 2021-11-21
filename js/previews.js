@@ -18,7 +18,7 @@ const defaultFilterButton = document.querySelector('#filter-default');
 const randomFilterButton = document.querySelector('#filter-random');
 const discussedFilterButton = document.querySelector('#filter-discussed');
 let commentsRendered = 0;
-let loaderHandler;
+let loadMoreClickHanlder;
 
 
 const showFullPhotoComments = (photoComments) => {
@@ -59,10 +59,10 @@ const showFullPhotoComments = (photoComments) => {
 
   cutVisionComments(photoComments);
 
-  loaderHandler = () => {
+  loadMoreClickHanlder = () => {
     cutVisionComments(photoComments);
   };
-  commentsLoaderButton.addEventListener('click', loaderHandler);
+  commentsLoaderButton.addEventListener('click', loadMoreClickHanlder);
 
 };
 
@@ -94,7 +94,7 @@ const renderPreviews = (picturesData) => {
         newCommentsField.value = '';
         document.removeEventListener('keydown', closePhotoKeydownHandler);
         fullPhotoComments.innerHTML = '';
-        commentsLoaderButton.removeEventListener('click', loaderHandler);
+        commentsLoaderButton.removeEventListener('click', loadMoreClickHanlder);
         commentsRendered = 0;
       }
     };
@@ -115,7 +115,7 @@ const renderPreviews = (picturesData) => {
       newCommentsField.value = '';
       document.removeEventListener('keydown', closePhotoKeydownHandler);
       fullPhotoComments.innerHTML = '';
-      commentsLoaderButton.removeEventListener('click', loaderHandler);
+      commentsLoaderButton.removeEventListener('click', loadMoreClickHanlder);
       commentsRendered = 0;
     });
   });
