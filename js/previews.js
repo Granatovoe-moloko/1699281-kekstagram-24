@@ -29,6 +29,7 @@ const renderPreviews = (picturesData) => {
       if (isEscapeKey(evt) && document.activeElement !== newCommentsField) {
         fullPhoto.classList.add('hidden');
         body.classList.remove('modal-open');
+        newCommentsField.value = '';
         document.removeEventListener('keydown', closePhotoKeydownHandler);
       }
     };
@@ -46,6 +47,8 @@ const renderPreviews = (picturesData) => {
     fullPhotoClose.addEventListener('click', () => {
       fullPhoto.classList.add('hidden');
       body.classList.remove('modal-open');
+      newCommentsField.value = '';
+      document.removeEventListener('keydown', closePhotoKeydownHandler);
     });
   });
   previewList.appendChild(fragment);

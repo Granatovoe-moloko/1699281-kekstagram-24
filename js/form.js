@@ -9,6 +9,21 @@ const MAX_HASHTAG_COUNT = 5;
 const STEP_CHANGE_SCALE = 25;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
+const MIN_CHROME_EFFECT = 0;
+const MAX_CHROME_EFFECT = 1;
+const STEP_CHROME_EFFECT = 0.1;
+const MIN_SEPIA_EFFECT = 0;
+const MAX_SEPIA_EFFECT = 1;
+const STEP_SEPIA_EFFECT = 0.1;
+const MIN_MARVIN_EFFECT = 0;
+const MAX_MARVIN_EFFECT = 100;
+const STEP_MARVIN_EFFECT = 1;
+const MIN_PHOBOS_EFFECT = 0;
+const MAX_PHOBOS_EFFECT = 3;
+const STEP_PHOBOS_EFFECT = 0.1;
+const MIN_HEAT_EFFECT = 0;
+const MAX_HEAT_EFFECT = 3;
+const STEP_HEAT_EFFECT = 0.1;
 const uploadFile = document.querySelector('#upload-file');
 const newFileForm = document.querySelector('.img-upload__form');
 const uploadForm = document.querySelector('.img-upload__overlay');
@@ -210,60 +225,60 @@ const downloadNewFile = () => {
       if(newFilePreview.classList.contains('effects__preview--chrome')) {
         effectLevelFieldset.classList.remove('hidden');
         slider.noUiSlider.updateOptions({
-          start: 1,
+          start: MAX_CHROME_EFFECT,
           range: {
-            'min': 0,
-            'max': 1,
+            'min': MIN_CHROME_EFFECT,
+            'max': MAX_CHROME_EFFECT,
           },
-          step: 0.1,
+          step: STEP_CHROME_EFFECT,
         });
       }
 
       else if(newFilePreview.classList.contains('effects__preview--sepia')) {
         effectLevelFieldset.classList.remove('hidden');
         slider.noUiSlider.updateOptions({
-          start: 1,
+          start: MAX_SEPIA_EFFECT,
           range: {
-            'min': 0,
-            'max': 1,
+            'min': MIN_SEPIA_EFFECT,
+            'max': MAX_SEPIA_EFFECT,
           },
-          step: 0.1,
+          step: STEP_SEPIA_EFFECT,
         });
       }
 
       else if(newFilePreview.classList.contains('effects__preview--marvin')) {
         effectLevelFieldset.classList.remove('hidden');
         slider.noUiSlider.updateOptions({
-          start: 100,
+          start: MAX_MARVIN_EFFECT,
           range: {
-            'min': 0,
-            'max': 100,
+            'min': MIN_MARVIN_EFFECT,
+            'max': MAX_MARVIN_EFFECT,
           },
-          step: 1,
+          step: STEP_MARVIN_EFFECT,
         });
       }
 
       else if(newFilePreview.classList.contains('effects__preview--phobos')) {
         effectLevelFieldset.classList.remove('hidden');
         slider.noUiSlider.updateOptions({
-          start: 3,
+          start: MAX_PHOBOS_EFFECT,
           range: {
-            'min': 0,
-            'max': 3,
+            'min': MIN_PHOBOS_EFFECT,
+            'max': MAX_PHOBOS_EFFECT,
           },
-          step: 0.1,
+          step: STEP_PHOBOS_EFFECT,
         });
       }
 
       else if(newFilePreview.classList.contains('effects__preview--heat')) {
         effectLevelFieldset.classList.remove('hidden');
         slider.noUiSlider.updateOptions({
-          start: 3,
+          start: MAX_HEAT_EFFECT,
           range: {
-            'min': 0,
-            'max': 3,
+            'min': MIN_HEAT_EFFECT,
+            'max': MAX_HEAT_EFFECT,
           },
-          step: 0.1,
+          step: STEP_HEAT_EFFECT,
         });
       }
 
