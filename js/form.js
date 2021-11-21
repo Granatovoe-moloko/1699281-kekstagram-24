@@ -24,6 +24,7 @@ const STEP_PHOBOS_EFFECT = 0.1;
 const MIN_HEAT_EFFECT = 0;
 const MAX_HEAT_EFFECT = 3;
 const STEP_HEAT_EFFECT = 0.1;
+const DEFAULT_SCALE = 1;
 const uploadFile = document.querySelector('#upload-file');
 const newFileForm = document.querySelector('.img-upload__form');
 const uploadForm = document.querySelector('.img-upload__overlay');
@@ -51,7 +52,7 @@ const closeSuccessMessage =() => {
   newFileForm.reset();
   newFilePreview.className = '';
   effectLevelFieldset.classList.add('hidden');
-  newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.transform = `scale${(DEFAULT_SCALE)}`;
   newFilePreview.style.cssText = null;
 
   const messageSuccess = successMessagePattern.cloneNode(true);
@@ -84,7 +85,7 @@ const closeErrorMessage =() => {
   newFileForm.reset();
   newFilePreview.className = '';
   effectLevelFieldset.classList.add('hidden');
-  newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.transform = `scale${(DEFAULT_SCALE)}`;
   newFilePreview.style.cssText = null;
 
   const messageError = errorMessagePattern.cloneNode(true);
@@ -128,7 +129,7 @@ const closeForm =() => {
   newFileForm.reset();
   newFilePreview.className = '';
   effectLevelFieldset.classList.add('hidden');
-  newFilePreview.style.transform = 'scale(1)';
+  newFilePreview.style.transform = `scale${(DEFAULT_SCALE)}`;
   newFilePreview.style.cssText = null;
 };
 
